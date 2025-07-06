@@ -2,8 +2,17 @@
 
 ## 随机算法
 
+### King随机
+
 * King设置强密码`PASSWORD`，使用AES加密64位的随机盐`RANDOM_SALT`得到`AES_ENCRIED_CODE`，将其记录在Solana的第`n`块上。
 * 在n+200之后，King通过合约公开密码`PASSWORD`。
+* 通过以下算法，计算出随机的64位的哈希。种子为`${RANDOM_SALT}_${SOLANA_BLOCK_HASH[n]}_${SOLANA_BLOCK_HASH[n+100]}_${SOLANA_BLOCK_HASH[n+101]}`。
+* 对种子循环SHA256计算100万次，得到最终的随机哈希。
+
+### 参与者随机
+
+* 从`选举池`里，随机选择7位参与者，用密码`Password`来加密随机盐`RANDOM_SALT`得到`ENCRIED_TEXT`保存到链上。
+* 7位参与者都写链成功后，`King`执行在第n块执行合约，确认开始。
 * 通过以下算法，计算出随机的64位的哈希。种子为`${RANDOM_SALT}_${SOLANA_BLOCK_HASH[n]}_${SOLANA_BLOCK_HASH[n+100]}_${SOLANA_BLOCK_HASH[n+101]}`。
 * 对种子循环SHA256计算100万次，得到最终的随机哈希。
 

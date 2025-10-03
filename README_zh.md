@@ -1,4 +1,4 @@
-# King管理中心
+# Septopus整体架构
 
 ## 合约入口
 
@@ -8,22 +8,20 @@
 
 * `Septopus`的功能，合约拆分情况如下：
 
-|  合约名称   | 功能描述  | 详情  |
-|  ----  | ----  | ----  |
-|  Rules  | Rules的数据、Rules的讨论、Rules的修改 |  |
-|  King  |  King的乐透选取、King的日常签到、King的审批签署、King的支付审核 |  |
-|  Project  |  Project的立项、 |  |
-|  Token  |  项目token的管理（创建、分发、锁定） |  |
-|  AI  |  AI的审核、AI的部署 |  |
-|  Adjunct  |  Adjunct创建、Adjunct更新等 |  |
-|  Resoure  |  Resouce创建、Resouce更新、Resouce举报 |  |
-|  World  |  World的拍卖、World的配置、World的销售状态 |  |
-|  Block  |  数据保存、Block交易、Block举报、Block禁显、Block申请恢复、Block恢复 |  |
-
-* ❌ ✅
+|  合约名称   | 功能描述  | 详情  | 所属模块  |
+|  ----  | ----  | ----  | ----  |
+|  Rules  | Rules的数据、Rules的讨论、Rules的修改 |  | Rules Center |
+|  King  |  King的乐透选取、King的日常签到、King的审批签署、King的支付审核 |  | King Center |
+|  Project  |  Project管理 |  | King Center |
+|  Group  |  多签钱包的管理 |  | King Center |
+|  Token  |  项目token的管理（创建、分发、锁定） |  | King Center |
+|  Treasure  |  国库的资金管理 |  | King Center |
+|  AI  |  AI的审核、AI的部署 |  | AI Center |
+|  Adjunct  |  Adjunct创建、Adjunct更新等 |  | Meta Septopus |
+|  Resoure  |  Resouce创建、Resouce更新、Resouce举报 |  | Meta Septopus |
+|  World  |  World的拍卖、World的配置、World的销售状态 |  | Meta Septopus |
+|  Block  |  数据保存、Block交易、Block举报、Block禁显、Block申请恢复、Block恢复 |  | Meta Septopus |
   
-### King合约
-
 ### Rules
 
 * Rules数据组织涉及到的PDA账号
@@ -42,6 +40,7 @@
 |  ----  | ----  | ---- | ---- | ---- |
 |  init  | 管理 | 初始化Rules系统，建立必要的账号 | null | King |
 |  config  | 管理 | 配置运行的参数，例如各种条件的百分比 |  | King |
+|  update  | 管理 | 修改Rules的配置，需经King审核 | JSON | King |
 |  launch  | 管理 | 系统开始去中心化运行，无法再进行随意添加 |  | King |
 |  add  | 循环 | 添加1条rules |  | King/Anyone |
 |  abandon  | 循环 | 废弃投票通过的rule |  | Anyone |
@@ -50,7 +49,105 @@
 |  comment  | 循环 | 对任何一条rule进行评论 |  | Anyone |
 |  accept  | 循环 | 接受一条新的rule |  | Anyone |
 
+### King合约
+
+* King数据组织涉及到的PDA账号
+
+* King合约外部请求的方法列表
+
+|  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  init  | 管理 | 初始化King系统，建立必要的账号 | null | King |
+|  config  | 管理 | 配置运行的参数，例如各种条件的百分比 | {agent:"Multi_sign_wallet"} | King |
+|  update  | 管理 | 修改Treasure的配置 | JSON | King |
+|  launch  | 管理 | 系统开始去中心化运行，无法再进行随意添加 |  | Anyone |
+|  lottery  | 乐透选取 | 启动King的随机选取过程 |  | King |
+|  pool  | 乐透选取 | 加入选取池 |  | Anyone |
+|  approve  | 乐透选取 | 验证选取结果，100万次的sha256循环计算 |  | Anyone |
+|  apply  | 循环 | 申请一项审核，需要king来进行处理 |  | Contract |
+|  review  | 循环 | King进行审核的操作，并附带结果 |  | King |
+|  abandon  | 循环 | King放弃自己位置的操作，会重新进入乐透选取 |  | Anyone |
+|  claim  | 循环 | King申请费用的操作 |  | King |
+
 ### Project合约
+
+* Project数据组织涉及到的PDA账号
+
+|  账户名   | 是否King  | Seeds  | 功能说明  | 数据结构  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  project_setting  | ✅ | ["PROJECT_SETTING"] | 配置运行的参数，例如各种条件的百分比 |  |
+
+* Project合约外部请求的方法列表
+
+|  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  init  | 管理 | 初始化Project系统，建立必要的账号 | null | King |
+|  config  | 管理 | 配置Project运行的参数，例如各种条件的百分比 | JSON | King |
+|  update  | 管理 | 修改Project的配置 | JSON | King |
+|  launch  | 管理 | 系统开始去中心化运行，无法再进行随意添加 |  | King |
+|  add  | 循环 | 添加1个Project |  | Anyone |
+|  apply  | 循环 | Project进行AI评审，最后由king审批 |  | Project Owner |
+|  funding  | 循环 | 提交一个请款申请，最后由king审批 |  | Project Owner |
+|  close  | 循环 | 终止project，最后由king审批 |  | Project Owner |
+
+### Group合约
+
+* Group数据组织涉及到的PDA账号
+
+* Group合约外部请求的方法列表，使用lottery方式创建的管理组
+  
+### Treasure合约
+
+* Treasure数据组织涉及到的PDA账号
+  
+|  账户名   | 是否King  | Seeds  | 功能说明  | 数据结构  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  treasure_setting  | ✅ | ["PROJECT_SETTING"] | 配置运行的参数，例如各种条件的百分比 | {holder:"ACCOUNT"} |
+
+* Treasure合约外部请求的方法列表
+
+|  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  init  | 管理 | 初始化Treasure系统，建立必要的账号 | null | King |
+|  config  | 管理 | 配置Treasure运行的参数，例如各种条件的百分比 | JSON | King |
+|  update  | 管理 | 修改Treasure的配置 | JSON | King |
+|  launch  | 管理 | 系统开始去中心化运行，无法再进行随意添加 |  | King |
+|  transfer  | 循环 | 将project的token转移到国库|   | King |
+|  donate  | 循环 | 向国库进行捐赠的操作 |  | Anyone |
+|  pay  | 循环 | 从国库支取的操作 |  | Contract |
+|  claim  | 循环 | 用户申请当期的分红 | (index,world,x,y) | Anyone |
+
+### AI合约
+
+* AI数据组织涉及到的PDA账号
+
+* AI合约外部请求的方法列表
+  
+|  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  init  | 管理 | 初始化Treasure系统，建立必要的账号 | null | King |
+|  config  | 管理 | 配置Treasure运行的参数，例如各种条件的百分比 | JSON | King |
+|  update  | 管理 | 修改Treasure的配置 | JSON | King |
+|  launch  | 管理 | 系统开始去中心化运行，无法再进行随意添加 |  | King |
+|  apply  | 循环 | 申请成为审核AI |  | AI Owner |
+|  vertify  | 循环 | 验证部署好后的AI |  | Anyone |
+|  claim  | 循环 | 申请审核AI的费用 |  | AI Owner |
+
+### Token合约
+
+* Token数据组织涉及到的PDA账号
+  
+* Token合约外部请求的方法列表
+
+|  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
+|  ----  | ----  | ---- | ---- | ---- |
+|  init  | 管理 | 初始化Treasure系统，建立必要的账号 | null | King |
+|  config  | 管理 | 配置Treasure运行的参数，例如各种条件的百分比 | JSON | King |
+|  update  | 管理 | 修改Treasure的配置 | JSON | King |
+|  launch  | 管理 | 系统开始去中心化运行，无法再进行随意添加 |  | King |
+|  create  | 循环 | 创建一个新的token，需要King的审核 | (project_id) | King |
+|  transfer  | 循环 | 发送token給指定账号，需要King的审核 |  | King |
+|  lock  | 循环 | 锁定剩余的 | | King |
 
 ### World合约
 
@@ -145,3 +242,13 @@
 |  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
 |  ----  | ----  | ---- | ---- | ---- |
 |  add  | 使用 | 添加一个Adjunct | adjunct{} | Anyone |
+
+## 执行流程
+
+### Rules Center
+
+### King Center
+
+### AI Center
+
+### Meta Septopus

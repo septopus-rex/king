@@ -6,7 +6,7 @@ declare_id!("3ve9oVE4P7NyiS93HGjjAoDaTuW9qearUty5ZnbfW8pM");
 
 
 #[program]
-pub mod entry {
+pub mod pool {
     use super::*;
 
     pub fn router(

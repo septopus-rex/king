@@ -5,7 +5,8 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-entry = "7tUr1JZECqmPAHqew3sjrzmygXsxCfzWoqfXaLsn6AZF"
+entry = "3ve9oVE4P7NyiS93HGjjAoDaTuW9qearUty5ZnbfW8pM"
+king = "7tUr1JZECqmPAHqew3sjrzmygXsxCfzWoqfXaLsn6AZF"
 
 [registry]
 url = "https://api.apr.dev"

@@ -1,5 +1,7 @@
 # Septopus整体架构
 
+* 更新到这里了[https://github.com/septopus-rex/homepage/blob/main/record/structure.md](https://github.com/septopus-rex/homepage/blob/main/record/structure.md)
+
 ## 合约入口
 
 * 使用Solana的CPI结构来组织`Septopus`的所有合约，使用单一入口。

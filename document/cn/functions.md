@@ -11,6 +11,10 @@
 
 ### 参与者随机
 
+* 放弃以下的方法，使用PoW的方式，分批计算来实现。
+
+---
+
 * 从`选举池`里，随机选择7位参与者，用密码`Password`来加密随机盐`RANDOM_SALT`得到`ENCRIED_TEXT`保存到链上。
 * 7位参与者都写链成功后，`King`执行在第n块执行合约，确认开始。
 * 通过以下算法，计算出随机的64位的哈希。种子为`${RANDOM_SALT}_${SOLANA_BLOCK_HASH[n]}_${SOLANA_BLOCK_HASH[n+100]}_${SOLANA_BLOCK_HASH[n+101]}`。

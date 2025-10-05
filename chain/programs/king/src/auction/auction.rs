@@ -15,7 +15,8 @@ use crate::constants::{
 pub fn init(
     ctx: Context<InitSystem>,      //default from system
 ) -> Result<()> {
-
+    
+    //check wether from `entry program` 
     let _index = &mut ctx.accounts.king_index;
 
     Ok(())

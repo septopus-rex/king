@@ -4,7 +4,7 @@ use anchor_lang::prelude::*;
 use crate::Pubkey;
 use std::str::FromStr;
 
-declare_id!("3ve9oVE4P7NyiS93HGjjAoDaTuW9qearUty5ZnbfW8pM");
+declare_id!("7tUr1JZECqmPAHqew3sjrzmygXsxCfzWoqfXaLsn6AZF");
 
 #[program]
 pub mod pool {
@@ -33,7 +33,9 @@ pub mod pool {
 
 #[derive(Accounts)]
 pub struct StartKing<'info> {
-    
+    #[account(mut)]
+    pub payer: Signer<'info>,
+
     /// CHECK: `Entry` PDA account, check authoritt
     pub entry_authority: AccountInfo<'info>, 
 

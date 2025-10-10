@@ -1,5 +1,5 @@
 {
-  "address": "3ve9oVE4P7NyiS93HGjjAoDaTuW9qearUty5ZnbfW8pM",
+  "address": "7tUr1JZECqmPAHqew3sjrzmygXsxCfzWoqfXaLsn6AZF",
   "metadata": {
     "name": "pool",
     "version": "0.1.0",
@@ -8,16 +8,16 @@
   },
   "instructions": [
     {
-      "name": "init",
+      "name": "start",
       "discriminator": [
-        220,
-        59,
-        207,
+        62,
+        15,
+        117,
         236,
-        108,
-        250,
         47,
-        100
+        1,
+        89,
+        139
       ],
       "accounts": [
         {
@@ -26,24 +26,20 @@
           "signer": true
         },
         {
-          "name": "king_index",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  117,
-                  110,
-                  116,
-                  101,
-                  114
-                ]
-              }
-            ]
-          }
+          "name": "entry_authority",
+          "relations": [
+            "treasury_state"
+          ]
+        },
+        {
+          "name": "treasury_state",
+          "docs": [
+            "Treasury 状态：检查这个账户是否由正确的授权者控制"
+          ],
+          "writable": true
+        },
+        {
+          "name": "user"
         },
         {
           "name": "system_program",
@@ -55,28 +51,39 @@
   ],
   "accounts": [
     {
-      "name": "KingIndex",
+      "name": "TreasuryState",
       "discriminator": [
-        30,
-        116,
-        113,
-        242,
-        233,
-        217,
-        62,
-        81
+        240,
+        56,
+        226,
+        158,
+        138,
+        244,
+        79,
+        154
       ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAuthorityMapping",
+      "msg": "The authority mapping in the treasury state is invalid."
     }
   ],
   "types": [
     {
-      "name": "KingIndex",
+      "name": "TreasuryState",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "value",
-            "type": "u32"
+            "name": "is_initialized",
+            "type": "bool"
+          },
+          {
+            "name": "entry_authority",
+            "type": "pubkey"
           }
         ]
       }

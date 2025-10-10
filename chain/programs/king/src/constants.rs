@@ -15,9 +15,7 @@ impl KingIndex {
     pub fn inc(&mut self, amount:u32) {
         self.value += amount
     }
-
-    ///!important, only on Devnet
-    //FIXME, DEBUG only, need to remove when deploy on mainnet
+    
     pub fn set(&mut self, amount:u32) {
         self.value = amount
     }

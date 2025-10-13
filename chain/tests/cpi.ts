@@ -29,7 +29,10 @@ const reqs={
         //await self.info.treasurystate();
         self.output.end(`Signature of "init": ${sign_init}`);
 
-    },   
+    },  
+    direct:async()=>{
+
+    },
 }
 
 describe("CPI call demo.",() => {

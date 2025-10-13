@@ -9,6 +9,7 @@ pub mod king {
     use super::*;
 
     pub fn start(ctx: Context<Start>, caller_program: Pubkey, caller: Pubkey) -> Result<()> {
+        
         const key_str:&str = "3ve9oVE4P7NyiS93HGjjAoDaTuW9qearUty5ZnbfW8pM";
         let expected_entry_program: Pubkey = Pubkey::from_str(key_str).unwrap();
         require_keys_eq!(

@@ -1,5 +1,7 @@
 # Project Protocol
 
+* 转移到文件夹`septopu/homepage/record/docs/zh/entry/`
+
 * 按照投资的`投融管退`的逻辑来组织`项目`的数据结构。
 
 * 任何人都可以创建项目，然后就开始走`milestone`,`项目`样板数据如下。

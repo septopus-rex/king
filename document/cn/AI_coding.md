@@ -24,7 +24,7 @@
 * 合约功能如下表
 
 |  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
-|  ----  | ----  | ---- | ---- | ---- |
+|  :----  | :----  | :---- | :---- | :---- |
 |  add  | 增加一个子合约 | 添加子合约的Program ID |  | King |
 |  remove  | 移除一个子合约 | 移除子合约的Program ID |  | King |
 
@@ -48,7 +48,7 @@
 * 合约功能如下表
 
 |  账户名   | 是否King  | Seeds  | 功能说明  | 数据结构  |
-|  ----  | ----  | ---- | ---- | ---- |
+|  :----  | :----  | :---- | :---- | :---- |
 |  world_common  | ✅ | ["WORLD_COMMON"] | 所有世界的通用数据 | u8[] |
 |  world_index  | ❌ | ["WORLD_INDEX"] | 记录当前正在使用的世界 | u32 |
 |  world_setting  | ❌ | ["WORLD_SETTING",world_index] | 当个世界的配置 | struct |
@@ -60,9 +60,9 @@
 |  world_status | ❌ | ["WORLD_STATUS",world_index,block_y] | 用来记录Block的销售状态 |  u8[512] |
 
 * World合约外部请求的方法列表
-  
+
 |  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
-|  ----  | ----  | ---- | ---- | ---- |
+|  :----  | :----  | :---- | :---- | :---- |
 |  init  | 初始化 | 开始Meta Septopus，#0 World进入拍卖状态 |  | King |
 |  auction_pool  | world拍卖 | 加入荷兰式拍卖的参与池子 |  | Anyone |
 |  auction_dutch_try  | world拍卖 | 进行荷兰式拍卖的操作 |  | Account in pool |
@@ -82,7 +82,7 @@
 * 合约PDA账号如下表
 
 |  账户名   | 是否King  | Seeds  | 功能说明  | 数据结构  |
-|  ----  | ----  | ---- | ---- | ---- |
+|  :----  | :----  | :---- | :---- | :---- |
 |  block_data  | ❌ | ["BLOCK_DATA",world_index,x,y] | 单个block数据 | [elevation,status,adjunct,game_setting] |
 |  block_selling  | ❌ | ["BLOCK_SELLING_LIST"] | 正在销售的block | {world,x,y,price,target}[] |
 |  complain_data  | ❌ | ["COMPLAIN_DATA",world_index,x,y] | 具体的举报数据 | complain[] |
@@ -90,6 +90,8 @@
 
 * 合约功能如下表
 
+|  合约方法   | 分类  | 功能描述  | 参数说明  | 签名人  |
+|  :----  | :----  | :---- | :---- | :---- |
 |  own  | 更新 | 初始化占有1个block |  | Anyone |
 |  abandon  | 更新 | 放弃block |  | Block Owner |
 |  occupy  | 更新 | 占有废弃的block |  | Block Owner |
